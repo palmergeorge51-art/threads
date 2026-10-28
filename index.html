@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>1K Followers in 30 Days: Challenge Tracker</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Instrument+Sans:wght@400;600&display=swap">
+<style>
+:root{--bg:#EEF1F5;--surface:#fff;--ink:#0F1722;--muted:#586374;--line:#D3DAE4;--accent:#2F4BFF;--on:#fff;--good:#0B7F58;--warn:#B36B00;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C1118;--surface:#151C26;--ink:#EAF0F7;--muted:#93A0B2;--line:#263140;--accent:#8497FF;--on:#0C1118;--good:#3DD598;--warn:#F2B544;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0C1118;--surface:#151C26;--ink:#EAF0F7;--muted:#93A0B2;--line:#263140;--accent:#8497FF;--on:#0C1118;--good:#3DD598;--warn:#F2B544;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 "Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 56px}
+h1,h2{font-family:"Bricolage Grotesque","Instrument Sans",system-ui,sans-serif;margin:0;line-height:1.1}
+h1{font-size:clamp(30px,8vw,44px);font-weight:800;letter-spacing:-.02em}
+h2{font-size:22px;font-weight:800;letter-spacing:-.01em}
+p{margin:0}
+.sub{color:var(--muted);margin-top:8px}
+section{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button{font:inherit;font-weight:600;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 14px}
+button.pri{background:var(--accent);color:var(--on);border-color:var(--accent)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.row>*{flex:1 1 140px}
+.big{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:56px;line-height:1;letter-spacing:-.03em}
+.meta{color:var(--muted);font-size:14px}
+.how{margin-top:10px}
+.lvl{margin-top:12px;padding:10px 12px;border-left:3px solid var(--accent);background:var(--bg);font-size:14px;border-radius:0 8px 8px 0}
+.board{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:12px}
+.cell{aspect-ratio:1;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;font-weight:600;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--muted)}
+.cell small{font-size:10px;font-weight:600;opacity:.85}
+.cell.done{background:var(--accent);border-color:var(--accent);color:var(--on)}
+.cell.miss{background:repeating-linear-gradient(135deg,var(--bg),var(--bg) 5px,var(--line) 5px,var(--line) 6px)}
+.cell.now{outline:3px solid var(--ink);outline-offset:1px;color:var(--ink)}
+.cell.sel{border-color:var(--ink);border-width:2px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.stat{background:var(--bg);border-radius:10px;padding:12px}
+.stat b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:28px;line-height:1.1}
+.status{margin-top:12px;padding:12px;border-radius:10px;border:1px solid var(--line);font-weight:600}
+.status.ok{border-color:var(--good);color:var(--good)}
+.status.bad{border-color:var(--warn);color:var(--warn)}
+.chips{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.chips button{text-align:left}
+.chips button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.fix{margin-top:12px;padding:12px;background:var(--bg);border-radius:10px}
+.fix b{display:block;margin-bottom:4px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px}
+.link{background:none;border:none;color:var(--muted);text-decoration:underline;padding:4px;font-weight:400;font-size:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+var T=[
+["Rewrite your bio","Use the four-part formula: who you help, the result they get, one line of proof, one call to action. Write three versions, read them out loud, keep the clearest.",15],
+["Pin your best post","Open your last 10 posts and pin the one with the most replies or saves. Nothing stands out? Write a short authority post that states your promise and ends with “follow for more.”",15],
+["Post your origin story","Where you were, the moment that changed things, what you do now. Be specific and honest, and skip the bragging.",20],
+["Find 10 accounts, reply to 3","Pick accounts that post daily and get real replies. Reply to 3 of their newest posts with a real opinion, using one of the reply formulas.",25],
+["Post your first hook-led post","Pick a hook from the Hook Bank and write 3 to 6 short lines under it. End with a question. Answer every reply in the first hour.",20],
+["Reply to 5 more posts","Choose fresh posts from your list. Use a different reply formula on each, and add something the author didn’t say.",15],
+["Review Week 1","Log your follower count, your best post and its hook style, how many days you completed, and one change for next week. Be honest about skipped days.",10],
+["Post with a curiosity hook","Use hooks 1 to 5 from the Hook Bank. Open a gap in the first line and close it by the end of the post.",20],
+["Reply to 5 accounts, then post","Do your replies before you open the post box. Notice whether your post does better on reply-first days.",15],
+["Post a “mistake I made” story","A real mistake, what it cost you, and the rule you follow now. Vulnerable and specific beats polished and vague.",20],
+["Test an unpopular opinion","State an opinion you actually hold in line one, then back it with one example. Firm, but polite.",20],
+["Reply to 5 more accounts","Afterwards, check which replies brought profile visits or follows. Write down which reply formula worked best.",15],
+["Post a “steal this” value post","Give people something usable today: a 3-step process, a checklist, or a template.",25],
+["Review Week 2","Compare your followers to Day 7. Name the hook style with the most replies. Are your replies more specific than in Week 1?",10],
+["Post a personal story with a lesson","A short story from your life or work that ends with one takeaway the reader can use.",20],
+["Reply to fresh posts","Reply to 5 accounts. At least 2 posts must be under an hour old. Check your list in the morning and again later.",15],
+["Post “what nobody tells you”","Share the part of a common belief that people rarely say, with one example from your own experience. Stay nearby to reply.",20],
+["Message 3 people who engaged","Thank them or ask a genuine question. Don’t pitch anything. If DMs aren’t available, reply on one of their posts instead.",15],
+["Post a case study","Starting point, steps, timeframe. Yours or someone else’s. Never invent numbers.",25],
+["Reply outside your usual list","Find new accounts in your niche, reply to 5 of their posts, and add promising ones to your list.",20],
+["Review Week 3","Compare to Day 14. Is growth steady, flat, or one spike? A spike with no follow-through means your bio or pin isn’t converting.",10],
+["Post a soft offer","Mention what you sell as the next step for a problem you’ve been talking about. No offer yet? Give away a free checklist.",20],
+["Reply to 5 accounts","Use the formulas that have worked best for you. Note which replies earned the most responses.",15],
+["Post a before and after","Old way, new way, and the one change that made the difference. Use real specifics.",20],
+["Update your pinned post","Pin your best post from the last three weeks. Make sure it points somewhere and matches your bio.",10],
+["Post a direct call to action","Ask for one specific thing (a follow, a reply, or a click) and say exactly why they should.",15],
+["Reply to 5 accounts","Home stretch. Keep your quality high instead of rushing.",15],
+["Expand your best idea into a thread","Five parts: a strong hook, three points with examples, and a clear takeaway.",30],
+["Review your 30 days","Find your 3 best posts and write why each worked: hook, topic, format, timing.",20],
+["Post your recap","Starting point, result, what worked, what didn’t, next goal. Be honest even if you’re short of 1,000.",20]
+];
+var CP=[[0,0],[7,100],[14,250],[21,550],[30,1000]];
+var LV={min:"Minimum (20 min): do today’s task and nothing else.",std:"Standard (45 min): today’s task, plus 5 extra replies and one extra post.",acc:"Accelerator (90 min): today’s task, 15 replies, 2 to 3 well-spaced posts, and answer every reply on your posts."};
+var DX=[
+["Few views on my posts","More eyes","Your hooks are weak or your posting times are off. Rewrite hooks from the Hook Bank, test a different time, and reply on bigger accounts so their audience sees you."],
+["Views, but few profile visits","More curiosity","Your posts aren’t curious or specific enough to make people tap your name. Sharpen the hook and add a stronger closing line."],
+["Profile visits, but few follows","Better conversion","Your profile isn’t converting. Rewrite your bio with the four-part formula, pin a stronger post, then run the three-second test with a friend."],
+["Follows, but no replies","Conversation","Your posts don’t invite answers. End with a question or take a clearer stance, then reply to every response."],
+["Good week, then a flat one","Habit","You probably stopped doing the replies. Go back to the 20-minute reply routine and change only that."]
+];
+var K="threads30v1",S=null,dx=-1,rst=false;
+try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function ds(d){return Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())}
+function iso(d){var m=d.getMonth()+1,x=d.getDate();return d.getFullYear()+"-"+(m<10?"0":"")+m+"-"+(x<10?"0":"")+x}
+function dayNow(){var p=S.start.split("-"),a=Date.UTC(+p[0],+p[1]-1,+p[2]);return Math.floor((ds(new Date())-a)/864e5)+1}
+function exp(d){for(var i=1;i<CP.length;i++){if(d<=CP[i][0]){var a=CP[i-1],b=CP[i];return a[1]+(b[1]-a[1])*(d-a[0])/(b[0]-a[0])}}return 1000}
+function $(id){return document.getElementById(id)}
+function render(){var a=$("app");a.innerHTML=S?board():setup();bind()}
+function setup(){
+return '<h1>1K Followers in 30 Days</h1><p class="sub">Your daily task, your numbers, and a check on whether you’re on pace. Everything stays on this device.</p>'+
+'<section><h2>Set up your challenge</h2>'+
+'<label for="sf">Your follower count today</label><input id="sf" type="number" min="0" inputmode="numeric" value="0">'+
+'<label for="sd">Start date (Day 1)</label><input id="sd" type="date" value="'+iso(new Date())+'">'+
+'<label for="gs">Stretch goal: new followers</label><input id="gs" type="number" min="1" inputmode="numeric" value="1000">'+
+'<label for="gf">Floor goal: a number you’d be proud of</label><input id="gf" type="number" min="1" inputmode="numeric" value="500">'+
+'<label for="lv">Daily time level</label><select id="lv"><option value="min">Minimum, 20 minutes</option><option value="std">Standard, 45 minutes</option><option value="acc">Accelerator, 90 minutes</option></select>'+
+'<div class="row"><button class="pri" id="go">Start the challenge</button></div></section>'}
+function stats(){
+var ks=Object.keys(S.logs).map(Number).filter(function(k){return S.logs[k].f!==""&&S.logs[k].f!=null}).sort(function(a,b){return a-b});
+var cur=S.sf,ld=0;if(ks.length){ld=ks[ks.length-1];cur=S.logs[ld].f}
+var gain=cur-S.sf,done=0;for(var k in S.logs)if(S.logs[k].done)done++;
+var pace=ld?gain/Math.max(ld,1):0,left=Math.max(30-ld,1),need=Math.max(S.gs-gain,0)/left,e=exp(Math.max(ld,0));
+var h='<section><h2>Your pace</h2><div class="stats">'+
+'<div class="stat"><b>'+(gain>=0?"+":"")+gain+'</b><span class="meta">new followers</span></div>'+
+'<div class="stat"><b>'+done+' / 30</b><span class="meta">days done</span></div>'+
+'<div class="stat"><b>'+pace.toFixed(1)+'</b><span class="meta">followers per day so far</span></div>'+
+'<div class="stat"><b>'+need.toFixed(1)+'</b><span class="meta">per day needed for your stretch goal</span></div></div>';
+if(!ld)h+='<div class="status">Log your follower count to see if you’re on pace.</div>';
+else{var diff=Math.round(gain-e),ok=diff>=0;
+h+='<div class="status '+(ok?"ok":"bad")+'">'+(ok?"On track. You’re "+diff+" ahead of the Day "+ld+" pace.":"Behind by "+(-diff)+" followers for Day "+ld+". Don’t restart. Pick the weakest lever below and fix just that.")+'</div>';
+h+='<p class="meta" style="margin-top:10px">Checkpoints: Day 7 about 100, Day 14 about 250, Day 21 about 550, Day 30 about 1,000.'+(gain>=S.gf?" You’ve passed your floor goal of "+S.gf+".":" Floor goal: "+S.gf+".")+'</p>'}
+return h+'</section>'}
+function board(){
+var tn=dayNow(),td=Math.min(Math.max(tn,1),30),v=S.view||td,t=T[v-1],L=S.logs[v]||{},c="";
+for(var i=1;i<=30;i++){var l=S.logs[i],k="cell";
+if(l&&l.done)k+=" done";else if(i<td)k+=" miss";
+if(i===td)k+=" now";if(i===v)k+=" sel";
+var cp=[7,14,21,30].indexOf(i)>-1?"<small>+"+CP[[7,14,21,30].indexOf(i)+1][1]+"</small>":"";
+c+='<button class="'+k+'" data-d="'+i+'" aria-label="Day '+i+(l&&l.done?", done":"")+'">'+i+cp+'</button>'}
+var head=tn<1?"Starts "+S.start:tn>30?"Day 30 window has passed. Keep logging.":"Day "+td+" of 30";
+return '<div class="top"><span class="meta">'+head+'</span><button class="link" id="rs">'+(rst?"Tap again to erase everything":"Reset")+'</button></div>'+
+'<section><span class="meta">Day '+v+(v!==td?" (not today)":" · today")+' · about '+t[2]+' minutes</span>'+
+'<h1 style="margin-top:6px;font-size:clamp(26px,7vw,36px)">'+esc(t[0])+'</h1>'+
+'<p class="how">'+esc(t[1])+'</p><p class="lvl">'+LV[S.lv]+'</p>'+
+'<label for="lf">Follower count after today’s task</label><input id="lf" type="number" min="0" inputmode="numeric" value="'+esc(L.f)+'">'+
+'<label for="ln">One sentence on what you posted</label><input id="ln" type="text" maxlength="140" value="'+esc(L.n)+'">'+
+'<div class="row"><button class="pri" id="sv">'+(L.done?"Update day "+v:"Mark day "+v+" done")+'</button>'+(v!==td?'<button id="bt">Back to today</button>':"")+'</div></section>'+
+'<section><h2>Your 30 days</h2><p class="meta">Tap any day to log it or catch up. Missed a day? Carry on from today’s day number.</p><div class="board">'+c+'</div></section>'+
+stats()+
+'<section><h2>What’s holding you back?</h2><p class="meta">Pick what you’re seeing and get the one lever to fix.</p><div class="chips">'+
+DX.map(function(d,i){return '<button data-x="'+i+'" aria-pressed="'+(dx===i)+'">'+d[0]+'</button>'}).join("")+'</div>'+
+(dx>-1?'<div class="fix"><b>Lever: '+DX[dx][1]+'</b>'+DX[dx][2]+'<p class="meta" style="margin-top:8px">Change one thing at a time so you know what worked.</p></div>':"")+'</section>'+
+'<section><h2>Ready to turn followers into sales?</h2><p class="how">The Daily Sales System helps you choose profitable ideas, launch your products, and work toward your first 100 customers. You get 5 practical resources: a launch blueprint, a done-for-you launch system, an idea validator + income estimator tool, 500 product ideas, and the First 100 Buyers Playbook.</p><div class="row"><a href="https://gorj.lemonsqueezy.com/checkout/buy/9018d0cb-27e6-4190-804f-6eaf6684bf0d?logo=0" target="_blank" rel="noopener" style="display:block;text-align:center;text-decoration:none;padding:12px 14px;border-radius:8px;background:var(--accent);color:var(--on);font-weight:600">Get the Daily Sales System for $27</a></div></section>'}
+function bind(){
+var g=$("go");if(g)g.onclick=function(){
+S={sf:+$("sf").value||0,start:$("sd").value||iso(new Date()),gs:+$("gs").value||1000,gf:+$("gf").value||500,lv:$("lv").value,logs:{},view:0};
+save();render();window.scrollTo(0,0)};
+var r=$("rs");if(r)r.onclick=function(){if(rst){S=null;rst=false;try{localStorage.removeItem(K)}catch(e){}}else rst=true;render()};
+var s=$("sv");if(s)s.onclick=function(){
+var td=Math.min(Math.max(dayNow(),1),30),v=S.view||td,f=$("lf").value;
+S.logs[v]={f:f===""?"":+f,n:$("ln").value,done:true};
+if(v===td)S.view=0;save();render()};
+var b=$("bt");if(b)b.onclick=function(){S.view=0;save();render();window.scrollTo(0,0)};
+document.querySelectorAll("[data-d]").forEach(function(e){e.onclick=function(){S.view=+e.dataset.d;save();render();window.scrollTo(0,0)}});
+document.querySelectorAll("[data-x]").forEach(function(e){e.onclick=function(){dx=dx===+e.dataset.x?-1:+e.dataset.x;render()}})}
+render();
+</script>
+</body>
+</html>
